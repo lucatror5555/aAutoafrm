@@ -1,0 +1,49 @@
+local SolarisLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Stebulous/solaris-ui-lib/main/source.lua"))()
+ 
+local win = SolarisLib:New({
+    Name = "Lord's Shop HUB BABFT",
+    FolderToSave = "BABFTscript"
+  })
+
+local tab = win:Tab("AutoFarm")
+
+local sec = tab:Section("AutoFarm")
+local toggle = sec:Toggle("Start", false,"Stop", function(t)
+    local function farm()
+        infarm = true
+    
+        local platform = Instance.new("Part", client.Character)
+        platform.Anchored = true
+        platform.Transparency = 1
+        platform.Size = Vector3.new(6, 1, 6)
+    
+        local connection
+        connection = game:GetService("RunService").RenderStepped:connect(function()
+            if client.Character:FindFirstChild("HumanoidRootPart") then
+                platform.Position = client.Character.HumanoidRootPart.CFrame * Vector3.new(0, -3.5, 0)
+            else
+                connection:Disconnect()
+            end
+        end)
+    
+        task.spawn(function()
+            task.wait(2)
+            firetouchinterest(client.Character.HumanoidRootPart, workspace.BoatStages.NormalStages.TheEnd.GoldenChest.Trigger, 0)
+        end)
+        
+        for i=1,10 do
+            if cancelled then 
+                return 
+            else
+                client.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages["CaveStage" .. i].DarknessPart.CFrame + Vector3.new(0, -30, 0)
+                
+                task.wait(1)
+    
+                if workspace.BoatStages.NormalStages:FindFirstChild("CaveStage" .. i + 1) then
+                    client.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages["CaveStage" .. i + 1].DarknessPart.CFrame + Vector3.new(0, -30, -20)
+                end
+            
+                task.wait(0.5)
+            end
+        end
+  end)
